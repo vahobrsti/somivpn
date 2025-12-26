@@ -521,7 +521,7 @@ else
     if ! command -v git &>/dev/null; then
       apt update -y
       apt install sudo -y
-      sudo apt install git wget -y
+      sudo apt install git wget curl -y
       sudo apt install iptables -y
     fi
   git clone https://github.com/vahobrsti/somivpn
