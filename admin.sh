@@ -508,7 +508,6 @@ if [ -d "somivpn" ]; then
 
   # Perform a git pull to update the repository
   git reset --hard
-  git clean -fd
   git pull
 
   # Download config.zip from S3
