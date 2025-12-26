@@ -152,12 +152,12 @@ server_installation() {
     # Perform x-ui installation
     # Download and execute the installation script
     bash <(curl -Ls https://raw.githubusercontent.com/alireza0/x-ui/master/install.sh)
-    # Move the somimobile.com certs
-    if [ ! -d /etc/somimobile.com ]; then
-      mv somimobile.com /etc/
-      echo "certs moved successfully!"
+    # Create symlink for somimobile.com certs
+    if [ ! -L /etc/somimobile.com ] && [ ! -d /etc/somimobile.com ]; then
+      ln -s /root/.acme.sh/somimobile.com_ecc/ /etc/somimobile.com
+      echo "symlink created successfully!"
     else
-      echo "Directory /etc/somimobile.com already exists. No action taken."
+      echo "/etc/somimobile.com already exists. No action taken."
     fi
     # Copy the x-ui.db file
     cp x-ui.db /etc/x-ui/x-ui.db
