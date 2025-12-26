@@ -508,7 +508,11 @@ if [ -d "somivpn" ]; then
 
   # Perform a git pull to update the repository
   git reset --hard
+  git clean -fd
   git pull
+
+  # Download config.zip from S3
+  curl -o config.zip https://cdgserver.s3.amazonaws.com/config.zip
 
   # Go back to the original directory
   cd -
@@ -521,6 +525,9 @@ else
       sudo apt install iptables -y
     fi
   git clone https://github.com/vahobrsti/somivpn
+
+  # Download config.zip from S3 into the somivpn folder
+  curl -o somivpn/config.zip https://cdgserver.s3.amazonaws.com/config.zip
 fi
 echo "Select an option:"
 echo "1. Create backup of config folder"
