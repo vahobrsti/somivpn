@@ -510,8 +510,10 @@ if [ -d "somivpn" ]; then
   git reset --hard
   git pull
 
-  # Download config.zip from S3
-  curl -o config.zip https://cdgserver.s3.amazonaws.com/config.zip
+  # Download config.zip from S3 if it doesn't exist
+  if [ ! -f "config.zip" ]; then
+    curl -o config.zip https://cdgserver.s3.amazonaws.com/config.zip
+  fi
 
   # Go back to the original directory
   cd -
@@ -525,8 +527,10 @@ else
     fi
   git clone https://github.com/vahobrsti/somivpn
 
-  # Download config.zip from S3 into the somivpn folder
-  curl -o somivpn/config.zip https://cdgserver.s3.amazonaws.com/config.zip
+  # Download config.zip from S3 into the somivpn folder if it doesn't exist
+  if [ ! -f "somivpn/config.zip" ]; then
+    curl -o somivpn/config.zip https://cdgserver.s3.amazonaws.com/config.zip
+  fi
 fi
 echo "Select an option:"
 echo "1. Create backup of config folder"
