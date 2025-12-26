@@ -106,7 +106,7 @@ server_installation() {
 
 
   # Specify the path to the zip file
-  zip_file="gostconfigs/config.zip"
+  zip_file="somivpn/config.zip"
 
   # Extract the zip file using the provided password
   echo "Extracting $zip_file..."
@@ -141,7 +141,7 @@ server_installation() {
     unzip awscliv2.zip
     sudo ./aws/install
     aws sts get-caller-identity
-    cd ./../gostconfigs || exit
+    cd ./../somivpn || exit
 
     ;;
   2)
@@ -278,7 +278,7 @@ server_installation() {
     # Use the network interface in the iptables command
     iptables -t nat -A POSTROUTING -s 10.10.10.0/24 -o "$net_interface" -j MASQUERADE
 
-    cd ./../gostconfigs || exit
+    cd ./../somivpn || exit
 
 
     # Hardcoded iptables directory
@@ -336,7 +336,7 @@ server_installation() {
     /opt/outline/persisted-state/start_container.sh
 
     echo "Installing udp2raw for udp over tcp"
-    cd ./../gostconfigs || exit
+    cd ./../somivpn || exit
     wget https://github.com/wangyu-/udp2raw/releases/download/20230206.0/udp2raw_binaries.tar.gz    tar xvzf wstunnel_9.2.3_linux_amd64.tar.gz
     tar xvzf udp2raw_binaries.tar.gz
     cp udp2raw_x86 /usr/local/bin/udp2raw
@@ -370,7 +370,7 @@ server_installation() {
 		systemctl restart openvpn
 		systemctl start openvpn@server
 		systemctl enable openvpn@server
-		cd ./../gostconfigs || exit
+		cd ./../somivpn || exit
     ;;
 
   *)
@@ -387,7 +387,7 @@ synchronize_certificates() {
   retrieve_password
 
   # Specify the path to the zip file
-  zip_file="gostconfigs/config.zip"
+  zip_file="somivpn/config.zip"
 
   # Extract the zip file using the provided password
 
@@ -413,7 +413,7 @@ synchronize_certificates() {
 synchronize_xui() {
     retrieve_password
     # Specify the path to the zip file
-    zip_file="gostconfigs/config.zip"
+    zip_file="somivpn/config.zip"
 
     # Extract the zip file using the provided password
     echo "Extracting $zip_file..."
@@ -431,7 +431,7 @@ synchronize_xui() {
 synchronize_outline(){
     retrieve_password
     # Specify the path to the zip file
-    zip_file="gostconfigs/config.zip"
+    zip_file="somivpn/config.zip"
 
     # Extract the zip file using the provided password
     echo "Extracting $zip_file..."
@@ -454,7 +454,7 @@ synchronize_outline(){
 synchronize_adguardhome(){
     retrieve_password
     # Specify the path to the zip file
-    zip_file="gostconfigs/config.zip"
+    zip_file="somivpn/config.zip"
 
     unzip -o -P "$password" "$zip_file"
 
@@ -486,7 +486,7 @@ synchronize_adguardhome(){
 synchronize_ocserv(){
       retrieve_password
       # Specify the path to the zip file
-      zip_file="gostconfigs/config.zip"
+      zip_file="somivpn/config.zip"
 
       # Extract the zip file using the provided password
       echo "Extracting $zip_file..."
@@ -501,10 +501,10 @@ synchronize_ocserv(){
 }
 
 
-# Check if the gostconfigs directory exists
-if [ -d "gostconfigs" ]; then
-  # Change into the gostconfigs directory
-  cd "gostconfigs" || exit
+# Check if the somivpn directory exists
+if [ -d "somivpn" ]; then
+  # Change into the somivpn directory
+  cd "somivpn" || exit
 
   # Perform a git pull to update the repository
   git reset --hard
@@ -520,7 +520,7 @@ else
       sudo apt install git -y
       sudo apt install iptables -y
     fi
-  git clone https://github.com/vahobrsti/gostconfigs
+  git clone https://github.com/vahobrsti/somivpn
 fi
 echo "Select an option:"
 echo "1. Create backup of config folder"
