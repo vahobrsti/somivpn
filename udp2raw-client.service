@@ -1,0 +1,11 @@
+[Unit]
+Description=websocket tunnel with wstunnel - client side
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/udp2raw -c -l0.0.0.0:5443 -r[2a05:d016:989:1700:22e3:b242:8a6c:7157]:8000 -k vghdAbQf15su1zk4aTav0M66DdBBe --raw-mode faketcp -a --fix-gro
+
+[Install]
+WantedBy=multi-user.target

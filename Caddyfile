@@ -1,0 +1,3 @@
+srecentral.somimobile.com {
+    reverse_proxy grafana:3000
+}

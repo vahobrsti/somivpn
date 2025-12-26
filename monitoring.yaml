@@ -1,0 +1,69 @@
+global:
+  scrape_interval: 30s
+  evaluation_interval: 30s
+  external_labels:
+    region: eu
+    role: monitor
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: ["alertmanager:9093"]
+
+rule_files:
+  - /etc/prometheus/rules/*.yml
+
+scrape_configs:
+  # Edge (Iran) from EU vantage: TCP+TLS handshake. The probe is from EU region
+  - job_name: bb-tls-edge-eu
+    metrics_path: /probe
+    params: { module: [tcp_tls] }
+    static_configs:
+      - targets: ["x.somimobile.com:4433","amin.somimobile.com:4433"]
+        labels: { hop: client_edge, region_vantage: eu }
+    relabel_configs:
+      - source_labels: [__address__] ; target: __param_target
+      - target: __address__ ; replacement: blackbox:9115
+
+  # Backends (Slovakia) from EU vantage: TCP on 4433 that ocserv is running
+  # prometheus.yml (EU vantage → SK backends)
+  - job_name: bb-tcp-backends
+    metrics_path: /probe
+    params: { module: [ tcp_connect ] }
+    static_configs:
+      - targets: [ "89.46.42.221:4433" ]
+    relabel_configs:
+      - source_labels: [ __address__ ] ; target: __param_target
+      - target:
+          __address__ ; replacement: blackbox:9115
+
+
+#  # Iran probe (when you deploy it): same modules, different target host. This must be done From Iran node.
+#  - job_name: bb-tls-edge-ir
+#    metrics_path: /probe
+#    params: { module: [tcp_tls] }
+#    static_configs:
+#      - targets: ["x.somimobile.com:4433"]
+#        labels: { hop: client_edge, region_vantage: ir }
+#    relabel_configs:
+#      - source_labels: [__address__] ; target: __param_target
+#      - target: __address__ ; replacement: iran-probe-host:9115
+
+  # smokeping-prober (EU vantage)
+  - job_name: smokeping-eu
+    static_configs:
+      - targets: [ "smokeping-prober:9374" ]
+        labels: { region_vantage: eu }
+
+  # Node/Haproxy exporters on edges/backends (scraped remotely)
+  - job_name: node
+    static_configs:
+      - targets:
+          - x.somimobile.com:9100
+
+  - job_name: haproxy
+    static_configs:
+      - targets:
+          - x.somimobile.com:9101
+
+  # Iran probe (Blackbox + smokeping-prober) — when you deploy it

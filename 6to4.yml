@@ -1,0 +1,31 @@
+#SIT server - main networking configuration [start]
+broker_main:
+  network:
+    version: 2
+    ethernets:
+      eth0:
+        dhcp4: true
+        dhcp6: no
+        addresses:
+          - <broker_subnet_routed>
+          - <broker_ipv6_onlink>
+        routes:
+          - to: "::/0"
+            via: "<broker_gateway>"
+#SIT server - main networking configuration [start]
+
+
+#sit tunnel client
+iran_netplan_sit:
+  network:
+    version: 2
+    tunnels:
+      frantech-ipv6:
+        mode: sit
+        remote: <broker_ip>
+        local: <iran_ip>
+        addresses:
+          - "<iran_ip6>/64"
+        routes:
+          - to: "::/0"
+            via: "<iran_gateway>"

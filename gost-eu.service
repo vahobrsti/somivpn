@@ -1,0 +1,12 @@
+[Unit]
+Description=gost ssh tunnel - europe side
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+Environment="GOST_LOGGER_LEVEL=warn"
+ExecStart=/usr/local/bin/gost -L ssh://:444/:4443 -- -L ssh://:7444/:7443 -- -L ssh://:6444/:6443 -- -L ssh://:8444/:8443 -- -L ssh://:4434/:4433 -- -L ssh://:5444/:5443
+
+[Install]
+WantedBy=multi-user.target

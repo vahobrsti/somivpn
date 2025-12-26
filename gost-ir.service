@@ -1,0 +1,12 @@
+[Unit]
+Description=gost ssh tunnel - iran side
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+Environment="GOST_LOGGER_LEVEL=warn"
+ExecStart=/usr/local/bin/gost -L tcp://:444 -F forward+ssh://zrh.somimobile.com:444 -- -L tcp://:7444 -F forward+ssh://zrh.somimobile.com:7444 -- -L tcp://:6444 -F forward+ssh://zrh.somimobile.com:6444 -- -L tcp://:8444 -F forward+ssh://zrh.somimobile.com:8444 -- -L tcp://:4434 -F forward+ssh://zrh.somimobile.com:4434 -- -L tcp://:5444 -F forward+ssh://zrh.somimobile.com:5444
+
+[Install]
+WantedBy=multi-user.target
